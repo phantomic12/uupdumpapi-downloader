@@ -29,17 +29,12 @@ fi
 
 API_URL="https://api.github.com/repos/${OWNER_REPO}/releases"
 
-AUTH_HEADER=()
-if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-  AUTH_HEADER=( -H "Authorization: Bearer ${GITHUB_TOKEN}" )
-fi
-
 echo "Fetching latest release assets for ${OWNER_REPO}..." >&2
-JSON=$(curl -fsSL "${API_URL}" "${AUTH_HEADER[@]}")
+JSON=$(curl -fsSL "${API_URL}")
 
 # Prefer the most recent release entry
 ASSET_URL=$(printf '%s' "$JSON" | awk -v RS= '{print}' | \
-  grep -o '"browser_download_url"\s*:\s*"[^"]*uupdump-linux-x86_64-[^"]*"' | \
+  grep -o '"browser_download_url"\s*:\s*"[^"]*/uupdump"' | \
   head -n 1 | sed -E 's/.*"(https:[^"]+)".*/\1/')
 
 if [[ -z "$ASSET_URL" ]]; then

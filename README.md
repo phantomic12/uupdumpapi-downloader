@@ -69,17 +69,12 @@ Notes
 
 ## Using the prebuilt Linux binary
 
-Download the release artifact named like `uupdump-linux-x86_64-YYYYMMDD-HHMMSS` from the Releases page. Make it executable and run directly:
+Download the release artifact named `uupdump` from the Releases page. Make it executable and run directly or place on your PATH:
 
 ```bash
-chmod +x ./uupdump-linux-x86_64-20230917-174534
-./uupdump-linux-x86_64-20230917-174534 list --search "Windows 11" --sort-by-date
-```
-
-You can also rename it to `uupdump` and place it on your `PATH`:
-
-```bash
-sudo mv ./uupdump-linux-x86_64-20230917-174534 /usr/local/bin/uupdump
+chmod +x ./uupdump
+./uupdump list --search "Windows 11" --sort-by-date
+sudo mv ./uupdump /usr/local/bin/uupdump
 uupdump version
 ```
 
@@ -106,6 +101,6 @@ Reproducible (manylinux2014 container):
 ./build.sh --manylinux
 ```
 
-GitHub Releases: each push to `main`/`master` (or manual dispatch) builds and attaches a single binary named `uupdump-linux-x86_64-YYYYMMDD-HHMMSS` to a timestamped release.
+GitHub Releases: each push to `main`/`master` (or manual dispatch) builds and attaches a single binary named `uupdump` to a timestamped release.
 
 
