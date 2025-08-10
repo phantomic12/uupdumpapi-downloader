@@ -3,16 +3,14 @@ set -euo pipefail
 
 # Install the latest Linux x86_64 uupdump binary from GitHub Releases
 # Usage:
-#   ./scripts/install-latest.sh <owner> <repo> [--bin-dir DIR]
+#   ./scripts/install-latest.sh [<owner>/<repo>] [--bin-dir DIR]
 # Example:
-#   ./scripts/install-latest.sh yoav/uupdumpapi-downloader --bin-dir /usr/local/bin
+#   ./scripts/install-latest.sh phantomic12/uupdumpapi-downloader --bin-dir /usr/local/bin
 
-if [[ $# -lt 1 ]]; then
-  echo "Usage: $0 <owner>/<repo> [--bin-dir DIR]" >&2
-  exit 2
-fi
-
-OWNER_REPO="$1"; shift || true
+# Default repository (can be overridden by passing <owner>/<repo>)
+OWNER_REPO_DEFAULT="phantomic12/uupdumpapi-downloader"
+OWNER_REPO="${1:-$OWNER_REPO_DEFAULT}"
+if [[ $# -gt 0 ]]; then shift || true; fi
 BIN_DIR="/usr/local/bin"
 while [[ $# -gt 0 ]]; do
   case "$1" in
