@@ -2,8 +2,10 @@ name: build-and-release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build-linux:
@@ -46,6 +48,7 @@ jobs:
         with:
           name: ${{ env.TS }}
           tag_name: ${{ env.TS }}
+          target_commitish: ${{ github.sha }}
           files: uupdump-linux-x86_64-${{ env.TS }}.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
