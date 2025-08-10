@@ -1,0 +1,53 @@
+name: build-and-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install build deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build single-file binary
+        run: |
+          pip install .
+          pyinstaller --name uupdump --onefile scripts/entrypoint.py
+
+      - name: Tar artifact
+        run: |
+          TS=$(date -u +"%Y%m%d-%H%M%S")
+          echo "TS=$TS" >> $GITHUB_ENV
+          tar -C dist -czf uupdump-linux-x86_64-${TS}.tar.gz uupdump
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: uupdump-linux-x86_64-${{ env.TS }}
+          path: uupdump-linux-x86_64-${{ env.TS }}.tar.gz
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ env.TS }}
+          tag_name: ${{ env.TS }}
+          files: uupdump-linux-x86_64-${{ env.TS }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
