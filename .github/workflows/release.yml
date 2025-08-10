@@ -31,18 +31,17 @@ jobs:
           pip install .
           pyinstaller --name uupdump --onefile scripts/entrypoint.py
 
-      - name: Prepare artifact (raw binary)
+      - name: Prepare metadata
         run: |
           TS=$(date -u +"%Y%m%d-%H%M%S")
           echo "TS=$TS" >> $GITHUB_ENV
-          cp dist/uupdump uupdump-linux-x86_64-${TS}
-          chmod +x uupdump-linux-x86_64-${TS}
+          chmod +x dist/uupdump
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: uupdump-linux-x86_64-${{ env.TS }}
-          path: uupdump-linux-x86_64-${{ env.TS }}
+          name: uupdump
+          path: dist/uupdump
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -50,7 +49,7 @@ jobs:
           name: ${{ env.TS }}
           tag_name: ${{ env.TS }}
           target_commitish: ${{ github.sha }}
-          files: uupdump-linux-x86_64-${{ env.TS }}
+          files: dist/uupdump
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
