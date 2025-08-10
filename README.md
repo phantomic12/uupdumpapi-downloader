@@ -67,6 +67,30 @@ Notes
 - API docs: `https://git.uupdump.net/uup-dump/json-api`
 - Respects `HTTP_PROXY`/`HTTPS_PROXY` env vars.
 
+## Using the prebuilt Linux binary
+
+Download the release artifact named like `uupdump-linux-x86_64-YYYYMMDD-HHMMSS` from the Releases page. Make it executable and run directly:
+
+```bash
+chmod +x ./uupdump-linux-x86_64-20230917-174534
+./uupdump-linux-x86_64-20230917-174534 list --search "Windows 11" --sort-by-date
+```
+
+You can also rename it to `uupdump` and place it on your `PATH`:
+
+```bash
+sudo mv ./uupdump-linux-x86_64-20230917-174534 /usr/local/bin/uupdump
+uupdump version
+```
+
+Quick install the latest binary from Releases:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/phantomic12/uupdumpapi-downloader/main/scripts/install-latest.sh \
+  | bash -s -- phantomic12/uupdumpapi-downloader
+```
+If your repository name differs, replace `phantomic12/uupdumpapi-downloader` accordingly.
+
 ## Build a universal Linux executable
 
 Locally (host toolchain):
@@ -82,6 +106,6 @@ Reproducible (manylinux2014 container):
 ./build.sh --manylinux
 ```
 
-GitHub Releases: push a tag like `v0.1.0` and CI will build and attach `uupdump-linux-x86_64.tar.gz` to the release.
+GitHub Releases: each push to `main`/`master` (or manual dispatch) builds and attaches a single binary named `uupdump-linux-x86_64-YYYYMMDD-HHMMSS` to a timestamped release.
 
 
